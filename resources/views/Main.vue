@@ -10,9 +10,7 @@
                id="name"
                v-model="name"
         >
-        <button type="submit"
-                @click="saveName()"
-        >
+        <button @click="saveName()">
           Save
         </button>
         <div class="col-12 mx-auto pt-4 text-left border-top mt-4">
@@ -78,7 +76,6 @@
       }
     },
     mounted() {
-      console.log('mounte1d')
       this.getFilms()
     },
     methods: {
@@ -106,14 +103,16 @@
         this.myFilms = unselected;
       },
       saveName() {
-        window.axios.post('http://myfilms.loc/userfilms.php')
+        window.axios.post('http://myfilms.loc/usersfilms.php',
+          {
+            name: this.name,
+            myFilms: this.myFilms
+          })
         .then((response) => {
-          console.log(Object.values(response.data))
-          this.films = (Object.values(response.data))
+          console.log('save', response)
         }).catch(e => {
           console.log('err', e.response.data.message);
         })
-        console.log('save' + this.name)
       }
     }
   }
