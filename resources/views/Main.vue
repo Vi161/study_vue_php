@@ -17,7 +17,7 @@
           <h5 class="pl-2">My Selectrd Films:</h5>
           <ul class="d-flex flex-wrap"
           >
-            <li class="card custom-card d-flex justify-content-center align-items-center p-2"
+            <li class="card custom-card d-flex justify-content-center align-items-center p-2 mb-2"
                 v-for="(el, i) in myFilms"
                 :key="i"
             >
@@ -34,7 +34,7 @@
           <h5 class="pl-2">Films</h5>
           <ul class="d-flex flex-wrap"
           >
-            <li class="card custom-card d-flex justify-content-center align-items-center p-2"
+            <li class="card custom-card d-flex justify-content-center align-items-center p-2 mb-2"
                 v-for="(el, i) in films"
                 :key="i"
             >
@@ -126,6 +126,7 @@
           window.axios.get(`../../public/${fileName}`,)
           .then((response) => {
             console.log('get', response.data);
+            this.name = response.data.name;
             this.myFilms=response.data.myFilms;
           }).catch(e => {
             console.log('err', e.response.data.message);
