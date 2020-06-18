@@ -58,6 +58,7 @@
 </template>
 
 <script>
+
   export default {
     name: "main",
     data() {
@@ -71,12 +72,13 @@
         ],
         myFilms: [],
         films: [
-
         ],
+        myJson: '',
       }
     },
     mounted() {
-      this.getFilms()
+      this.getFilms();
+      this.getUrlPar();
     },
     methods: {
       getFilms() {
@@ -109,10 +111,27 @@
             myFilms: this.myFilms
           })
         .then((response) => {
-          console.log('save', response)
         }).catch(e => {
           console.log('err', e.response.data.message);
         })
+      },
+      getUrlPar() {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const user = urlParams.get('user')
+        if (user) {
+          const fileName = `${user}.json`
+          console.log('file', fileName)
+
+          window.axios.get(`../../public/${fileName}`,)
+          .then((response) => {
+            console.log('get', response.data);
+            this.myFilms=response.data.myFilms;
+          }).catch(e => {
+            console.log('err', e.response.data.message);
+          })
+        }
+
       }
     }
   }
