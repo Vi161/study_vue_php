@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1 class="f">Study vue-cli, webpack project</h1>
     <app-main/>
   </div>
 </template>
