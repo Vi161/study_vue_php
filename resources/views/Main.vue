@@ -10,6 +10,11 @@
                id="name"
                v-model="name"
         >
+        <button type="submit"
+                @click="saveName()"
+        >
+          Save
+        </button>
         <div class="col-12 mx-auto pt-4 text-left border-top mt-4">
           <h5 class="pl-2">My Selectrd Films:</h5>
           <ul class="d-flex flex-wrap"
@@ -43,6 +48,11 @@
               </a>
             </li>
           </ul>
+          <button type="submit"
+                  @click="sortByName()"
+          >
+            Sort by name
+          </button>
         </div>
       </div>
     </div>
@@ -63,34 +73,26 @@
         ],
         myFilms: [],
         films: [
-          {
-            id: 1,
-            name: 'Спиздили',
-          },
-          {
-            id: 2,
-            name: 'Карты деньги, два ствола',
-          },
-          {
-            id: 3,
-            name: 'Титаник',
-          },
-          {
-            id: 4,
-            name: 'Джуманджи',
-          },
-          {
-            id: 5,
-            name: 'Немецкие официантки',
-          },
-          {
-            id: 6,
-            name: 'Выживший',
-          }
+
         ],
       }
     },
+    mounted() {
+      console.log('mounte1d')
+      this.getFilms()
+    },
     methods: {
+      getFilms() {
+        window.axios.get('http://myfilms.loc/films.php ')
+        .then((response) => {
+          this.films = (Object.values(response.data))
+        }).catch(e => {
+          console.log('err', e.response.data.message);
+        })
+      },
+      sortByName() {
+        this.films.sort((a, b) => (a.name > b.name) ? 1 : -1);
+      },
       selectFilm(id) {
         let films = this.films;
         let selectedFilm = films.filter(el => el.id == id);
@@ -102,6 +104,16 @@
       unselectFilm(id) {
         let unselected = this.myFilms.filter(el => el.id !== id);
         this.myFilms = unselected;
+      },
+      saveName() {
+        window.axios.post('http://myfilms.loc/userfilms.php')
+        .then((response) => {
+          console.log(Object.values(response.data))
+          this.films = (Object.values(response.data))
+        }).catch(e => {
+          console.log('err', e.response.data.message);
+        })
+        console.log('save' + this.name)
       }
     }
   }
