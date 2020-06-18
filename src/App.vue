@@ -1,13 +1,17 @@
 <template>
   <div id="app">
-    <h1>Study vue-cli, webpack project</h1>
-
+    <h1 class="f">Study vue-cli, webpack project</h1>
+    <app-main/>
   </div>
 </template>
 
 <script>
+  import AppMain from '../resources/views/Main';
 export default {
   name: 'app',
+  components: {
+    AppMain
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
