@@ -32,10 +32,23 @@
         </div>
         <div class="col-12 mx-auto pt-4 text-left border-top mt-4">
           <h5 class="pl-2">Films</h5>
+
+          <label for="filter" class="ml-2">Find Film: </label>
+          <input type="text"
+                 class="form-group"
+                 name="filter"
+                 id="filter"
+                 v-model="search"
+          >
+          <button type="submit"
+                  @click="sortByName()"
+          >
+            Sort by name
+          </button>
           <ul class="d-flex flex-wrap"
           >
             <li class="card custom-card d-flex justify-content-center align-items-center p-2 mb-2"
-                v-for="(el, i) in films"
+                v-for="(el, i) in filteredFilms"
                 :key="i"
             >
               <a href="javascript:void(0)"
@@ -46,11 +59,6 @@
               </a>
             </li>
           </ul>
-          <button type="submit"
-                  @click="sortByName()"
-          >
-            Sort by name
-          </button>
         </div>
       </div>
     </div>
@@ -74,11 +82,19 @@
         films: [
         ],
         myJson: '',
+        search: '',
       }
     },
     mounted() {
       this.getFilms();
       this.getUrlPar();
+    },
+    computed: {
+      filteredFilms(){
+        return this.films.filter(film => {
+          return film.name.toLowerCase().includes(this.search.toLowerCase())
+      });
+     }
     },
     methods: {
       getFilms() {
