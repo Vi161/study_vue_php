@@ -61,8 +61,6 @@ function get_film($id) {
   $result = $films[$id];
   return $result;
 }
-//$res = get_film(1);
-//print_r($res);
 $films = get_films();
 $arr = (array) $films;
 echo json_encode($arr, true);

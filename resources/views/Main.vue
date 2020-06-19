@@ -73,6 +73,7 @@
     name: "main",
     data() {
       return {
+        path: 'myfilms.loc',
         name: '',
         users: [
           {
@@ -100,7 +101,7 @@
     },
     methods: {
       getFilms() {
-        window.axios.get('http://myfilms.loc/films.php ')
+        window.axios.get(`http://${this.path}/films.php`)
         .then((response) => {
           this.films = (Object.values(response.data))
         }).catch(e => {
@@ -123,23 +124,24 @@
         this.myFilms = unselected;
       },
       saveName() {
-        window.axios.post('http://myfilms.loc/usersfilms.php',
+        window.axios.post(`http://${this.path}/usersfilms.php`,
           {
             date: this.todayDate('_'),
             name: this.name.toLowerCase(),
             myFilms: this.myFilms
           })
         .then((response) => {
-          let fileName = response.data.split('"')[1];
+            let fileName = JSON.stringify(response.data).split('/')[1];
+            console.log('save',  fileName)
+
+
           let fileNameClear = fileName.split('.')[0]
 
-          if (response.data) {
             alert('Film saved to file: ' + fileName)
-          }
           window.history.pushState({}, document.title, "/?user=" + fileNameClear );
 
         }).catch(e => {
-          console.log('err', e.response);
+          console.log('err', e);
         })
       },
       getUrlPar() {
@@ -148,8 +150,7 @@
         const user = urlParams.get('user')
         if (user) {
           let fileName = `${user}.json`
-
-          window.axios.get(`../../public/${fileName}`,)
+          window.axios.get(`../../public/saved/${fileName}`,)
           .then((response) => {
             this.name = response.data.name.charAt(0).toUpperCase() + response.data.name.slice(1);
             this.myFilms=response.data.myFilms;
