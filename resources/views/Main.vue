@@ -3,6 +3,8 @@
     <h1>My films</h1>
     <div class="row">
       <div class="col-12 mx-auto pt-4 text-left">
+        <p class="mb-5 mt-3">For get saved user films push params to url "user='username_DD_MM_YYY'"</p>
+
         <label for="name" class="pr-3">User Name: </label>
         <input type="text"
                class="form-group"
@@ -123,12 +125,21 @@
       saveName() {
         window.axios.post('http://myfilms.loc/usersfilms.php',
           {
-            name: this.name,
+            date: this.todayDate('_'),
+            name: this.name.toLowerCase(),
             myFilms: this.myFilms
           })
         .then((response) => {
+          let fileName = response.data.split('"')[1];
+          let fileNameClear = fileName.split('.')[0]
+
+          if (response.data) {
+            alert('Film saved to file: ' + fileName)
+          }
+          window.history.pushState({}, document.title, "/?user=" + fileNameClear );
+
         }).catch(e => {
-          console.log('err', e.response.data.message);
+          console.log('err', e.response);
         })
       },
       getUrlPar() {
@@ -136,19 +147,27 @@
         const urlParams = new URLSearchParams(queryString);
         const user = urlParams.get('user')
         if (user) {
-          const fileName = `${user}.json`
-          console.log('file', fileName)
+          let fileName = `${user}.json`
 
           window.axios.get(`../../public/${fileName}`,)
           .then((response) => {
-            console.log('get', response.data);
-            this.name = response.data.name;
+            this.name = response.data.name.charAt(0).toUpperCase() + response.data.name.slice(1);
             this.myFilms=response.data.myFilms;
           }).catch(e => {
             console.log('err', e.response.data.message);
           })
         }
 
+      },
+      todayDate(sp) {
+        let today = new Date();
+        let dd = today.getDate(),
+          mm = today.getMonth() + 1,
+          yyyy = today.getFullYear();
+
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm;
+        return (mm + sp + dd + sp + yyyy);
       }
     }
   }

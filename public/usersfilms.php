@@ -7,7 +7,8 @@ ini_set("display_errors", 0);
 
 $data = file_get_contents('php://input');
 $name = json_decode($data)->name;
-$file_name = $name.'.json';
+$todayDate = json_decode($data)->date;
+$file_name = $name.'_'.$todayDate.'.json';
 file_put_contents($file_name, $data);
 
 var_dump($file_name);
