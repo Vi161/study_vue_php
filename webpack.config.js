@@ -72,7 +72,7 @@ module.exports = {
   plugins: [
     // ...
     new Dotenv({
-      path: `./.env.${process.env.NODE_ENV}`
+      path: `./.env`
       // set the path for the dot-env, more config information you can visit the official documents
     }),
   ],
