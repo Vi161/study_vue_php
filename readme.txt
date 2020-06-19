@@ -5,7 +5,7 @@ frontend:
     npm run dev (npm run watch)
 
 backend:
-    в мампе настроить проект с урлом myfilms.loc и указать путь к папке public
-    или в файле resources/views/Main.vue поменять переменную path на свой урл
+    в мампе настроить проект и указать путь к папке public
+    в файле .env добавить урл по ключу VUE_APP_URL
 
 

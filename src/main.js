@@ -11,6 +11,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 Vue.use(BootstrapVue)
 
+
 new Vue({
   el: '#app',
   render: h => h(App)

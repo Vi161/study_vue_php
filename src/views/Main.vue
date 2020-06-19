@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>My films</h1>
+    <a href="/" class="h1">My films</a>
     <div class="row">
       <div class="col-12 mx-auto pt-4 text-left">
         <p class="mb-5 mt-3">For get saved user films push params to url "user='username_DD_MM_YYY'"</p>
@@ -73,7 +73,7 @@
     name: "main",
     data() {
       return {
-        path: 'myfilms.loc',
+        path: '',
         name: '',
         users: [
           {
@@ -91,6 +91,7 @@
     mounted() {
       this.getFilms();
       this.getUrlPar();
+      this.path = process.env.VUE_APP_URL
     },
     computed: {
       filteredFilms(){
@@ -135,20 +136,23 @@
         this.myFilms = unselected;
       },
       saveName() {
-        window.axios.post(`http://${this.path}/usersfilms.php`,
-          {
-            date: this.todayDate('_'),
-            name: this.name.toLowerCase(),
-            myFilms: this.myFilms
+        if (this.name) {
+          window.axios.post(`http://${this.path}/usersfilms.php`,
+            {
+              date: this.todayDate('_'),
+              name: this.name.toLowerCase(),
+              myFilms: this.myFilms
+            })
+          .then((response) => {
+            let fileName = JSON.stringify(response.data).split('/')[1];
+            let fileNameClear = fileName.split('.')[0]
+            alert('Film saved to file: ' + fileName)
+
+            window.history.pushState({}, document.title, "/?user=" + fileNameClear );
+          }).catch(e => {
+            console.log('err', e);
           })
-        .then((response) => {
-          let fileName = JSON.stringify(response.data).split('/')[1];
-          let fileNameClear = fileName.split('.')[0]
-          alert('Film saved to file: ' + fileName)
-          window.history.pushState({}, document.title, "/?user=" + fileNameClear );
-        }).catch(e => {
-          console.log('err', e);
-        })
+        }
       },
       getUrlPar() {
         const queryString = window.location.search;

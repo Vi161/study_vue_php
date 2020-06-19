@@ -1,6 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
-
+const Dotenv = require('dotenv-webpack');
 module.exports = {
   entry: './src/main.js',
   output: {
@@ -69,6 +69,13 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    // ...
+    new Dotenv({
+      path: `./.env.${process.env.NODE_ENV}`
+      // set the path for the dot-env, more config information you can visit the official documents
+    }),
+  ],
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
