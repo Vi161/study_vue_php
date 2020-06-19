@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import AppMain from '../resources/views/Main';
+  import AppMain from './views/Main';
 export default {
   name: 'app',
   components: {

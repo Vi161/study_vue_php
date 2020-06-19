@@ -94,19 +94,30 @@
     },
     computed: {
       filteredFilms(){
-        return this.films.filter(film => {
-          return film.name.toLowerCase().includes(this.search.toLowerCase())
-      });
-     }
+        if (this.films) {
+          return this.films.filter(film => {
+            return film.name.toLowerCase().includes(this.search.toLowerCase())
+          });
+        }
+      }
     },
     methods: {
       getFilms() {
-        window.axios.get(`http://${this.path}/films.php`)
+        window.axios.get(`../../resources/films.json`,)
         .then((response) => {
           this.films = (Object.values(response.data))
         }).catch(e => {
-          console.log('err', e.response.data.message);
+          console.log('err', e.response);
         })
+
+        // get films list from php file
+
+        // window.axios.get(`http://${this.path}/films.php`)
+        // .then((response) => {
+        //   this.films = (Object.values(response.data))
+        // }).catch(e => {
+        //   console.log('err', e.response.data.message);
+        // })
       },
       sortByName() {
         this.films.sort((a, b) => (a.name > b.name) ? 1 : -1);
@@ -131,15 +142,10 @@
             myFilms: this.myFilms
           })
         .then((response) => {
-            let fileName = JSON.stringify(response.data).split('/')[1];
-            console.log('save',  fileName)
-
-
+          let fileName = JSON.stringify(response.data).split('/')[1];
           let fileNameClear = fileName.split('.')[0]
-
-            alert('Film saved to file: ' + fileName)
+          alert('Film saved to file: ' + fileName)
           window.history.pushState({}, document.title, "/?user=" + fileNameClear );
-
         }).catch(e => {
           console.log('err', e);
         })
